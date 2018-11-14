@@ -1,0 +1,25 @@
+{
+  "name": "portfolio-tracking",
+  "version": "1.0.0",
+  "description": "A portfolio tracking API which allows adding/deleting/updating trades and can do basic return calculations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umang-govil/portfolio-tracking.git"
+  },
+  "author": "Umang Govil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/umang-govil/portfolio-tracking/issues"
+  },
+  "homepage": "https://github.com/umang-govil/portfolio-tracking#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.12",
+    "morgan": "^1.9.1"
+  }
+}
