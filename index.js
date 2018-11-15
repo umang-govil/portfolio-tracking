@@ -10,6 +10,8 @@ var app = express();
 
 module.exports = app;
 
+mongoose.Promise = global.Promise;
+
 mongoose.connect(database, function(err) {
 	if (err) {
 		console.log(err);
@@ -23,6 +25,9 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+
+var portfolio = require('./app/routes/route');
+app.use('/portfolio', portfolio);
 
 app.listen(port, function(err) {
 	if (err) {
