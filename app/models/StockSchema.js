@@ -7,11 +7,10 @@ var StockSchema = new Schema({
 		type: String,
 		required: true
 	},
-	trades: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Trade',
-		default: null
-	}]
+	description: {
+		type: String,
+		required: true
+	}
 }, {
 	timestamps: true
 });

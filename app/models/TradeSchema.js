@@ -7,6 +7,10 @@ var TradeSchema = new Schema({
 		type: String,
 		required: true
 	},
+	portfolioName: {
+		type: String,
+		required: true
+	},
 	price: {
 		type: Number,
 		required: true
@@ -20,8 +24,7 @@ var TradeSchema = new Schema({
 		required: true
 	},
 	date: {
-		type: Date,
-		required: true
+		type: Date
 	}
 }, {
 	timestamps: true
