@@ -5,6 +5,9 @@ var Schema = mongoose.Schema;
 var PortfolioSchema = new Schema({
 	name: {
 		type: String,
+		index: {
+			unique: true
+		},
 		required: true
 	},
 	trades: [{

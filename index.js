@@ -1,10 +1,10 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var mongoose = require('mongoose');
 
 var port = process.env.PORT || 3000;
-var database = 'mongodb://127.0.0.1:27017/test';
-var mongoose = require('mongoose');
+var database = process.env.database;
 
 var app = express();
 
@@ -12,7 +12,10 @@ module.exports = app;
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(database, function(err) {
+mongoose.connect(database, {
+	useNewUrlParser: true,
+	useCreateIndex: true
+}, function(err) {
 	if (err) {
 		console.log(err);
 	} else

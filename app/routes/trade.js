@@ -7,6 +7,8 @@ var express = require('express');
 var api = express.Router();
 var mongoose = require('mongoose');
 
+var validator = require('validator');
+
 api.addStock = function(req, res) {
 	var stock = new Stock({
 		name: req.body.stockName,
@@ -57,33 +59,42 @@ api.addTrade = function(req, res) {
 						message: 'Portfolio not listed in the Database'
 					});
 				} else {
-					var trade = new Trade({
-						stockName: req.body.stockName,
-						portfolioName: req.body.portfolioName,
-						price: req.body.price,
-						quantity: req.body.quantity,
-						tradeType: req.body.tradeType,
-						date: new Date()
-					});
-					trade.save(function(err, data) {
-						if (err) {
-							res.status(500).send({
-								success: false,
-								data: err
-							});
-						} else {
-							portfolio.trades.push(data._id);
+					var tradeType = req.body.tradeType.toUpperCase();
+					var valid = validator.isNumeric(req.body.price) && validator.isNumeric(req.body.quantity) && (tradeType == 'BUY' || tradeType == 'SELL');
+					if (valid == 1) {
+						var trade = new Trade({
+							stockName: req.body.stockName,
+							portfolioName: req.body.portfolioName,
+							price: req.body.price,
+							quantity: req.body.quantity,
+							tradeType: tradeType,
+							date: new Date()
+						});
+						trade.save(function(err, data) {
+							if (err) {
+								res.status(500).send({
+									success: false,
+									data: err
+								});
+							} else {
+								portfolio.trades.push(data._id);
 
-							portfolio.save(function(err) {
-								if (err) throw err;
-							});
+								portfolio.save(function(err) {
+									if (err) throw err;
+								});
 
-							res.status(200).json({
-								success: true,
-								message: 'Trade added successfully'
-							});
-						}
-					});
+								res.status(200).json({
+									success: true,
+									message: 'Trade added successfully'
+								});
+							}
+						});
+					} else {
+						res.status(500).send({
+							success: false,
+							message: 'Enter valid trade details'
+						});
+					}
 				}
 			});
 		}
@@ -106,24 +117,33 @@ api.updateTrade = function(req, res) {
 				message: 'Trade Not Found'
 			});
 		} else {
-			trade.stockName = req.body.stockName;
-			tarde.portfolioName = req.body.portfolioName;
-			trade.price = req.body.price;
-			trade.quantity = req.body.quantity;
-			trade.tradeType = req.body.tradeType;
-			trade.save(function(err) {
-				if (err) {
-					res.status(500).send({
-						success: false,
-						data: err
-					});
-				} else {
-					res.status(200).json({
-						success: true,
-						message: 'Trade updated successfully'
-					});
-				}
-			});
+			var tradeType = req.body.tradeType.toUpperCase();
+			var valid = validator.isNumeric(req.body.price) && validator.isNumeric(req.body.quantity) && (tradeType == 'BUY' || tradeType == 'SELL');
+			if (valid == 1) {
+				trade.stockName = req.body.stockName;
+				trade.portfolioName = req.body.portfolioName;
+				trade.price = req.body.price;
+				trade.quantity = req.body.quantity;
+				trade.tradeType = tradeType;
+				trade.save(function(err) {
+					if (err) {
+						res.status(500).send({
+							success: false,
+							data: err
+						});
+					} else {
+						res.status(200).json({
+							success: true,
+							message: 'Trade updated successfully'
+						});
+					}
+				});
+			} else {
+				res.status(500).send({
+					success: false,
+					message: 'Enter valid trade details'
+				});
+			}
 		}
 	});
 };
