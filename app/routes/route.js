@@ -12,5 +12,7 @@ api.delete('/removeTrade/:tradeId', trade.removeTrade);
 
 api.post('/createPortfolio', portfolio.createPortfolio);
 api.get('/', portfolio.getPortfolio);
+api.get('/holdings', portfolio.getHoldings);
+api.get('/returns', portfolio.getCumulativeReturns);
 
 module.exports = api;
